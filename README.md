@@ -24,6 +24,17 @@ python -m mkdocs serve
 - GitHub仓库：https://github.com/Biometeor/cell-standard
 - ReadTheDocs文档：https://cell-standard.readthedocs.io/
 
+## ReadTheDocs 配置
+
+代码推送后，访问 https://readthedocs.org/dashboard/ 完成配置：
+
+1. 点击 "Import a Project"
+2. 选择 "Biometeor/cell-standard" 仓库
+3. 点击 "Next" → 系统自动识别 `.readthedocs.yaml`
+4. 构建完成后访问：https://cell-standard.readthedocs.io/
+
+配置文件已就绪：`.readthedocs.yaml`
+
 ## 参考标准
 
 本标准参考了CellxGene的字段要求，适用于：
