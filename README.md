@@ -21,8 +21,8 @@ python -m mkdocs serve
 
 ## 在线文档
 
-- GitHub仓库：https://github.com/yourusername/cell-standard-docs
-- ReadTheDocs文档：https://cell-standard-docs.readthedocs.io/
+- GitHub仓库：https://github.com/Biometeor/cell-standard
+- ReadTheDocs文档：https://cell-standard.readthedocs.io/
 
 ## 参考标准
 

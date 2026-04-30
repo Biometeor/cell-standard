@@ -1,7 +1,7 @@
 site_name: 细胞高质量数据标准 v1
-site_url: https://yourusername.github.io/cell-standard-docs/
-repo_url: https://github.com/yourusername/cell-standard-docs
-repo_name: cell-standard-docs
+site_url: https://biometeor.github.io/cell-standard/
+repo_url: https://github.com/Biometeor/cell-standard
+repo_name: cell-standard
 edit_uri: edit/main/docs/
 
 theme:
