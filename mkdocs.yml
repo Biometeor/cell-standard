@@ -1,5 +1,5 @@
 site_name: 细胞高质量数据标准 v1
-site_url: https://biometeor.github.io/cell-standard/
+site_url: https://cell-standard.readthedocs.io/
 repo_url: https://github.com/Biometeor/cell-standard
 repo_name: cell-standard
 edit_uri: edit/main/docs/
