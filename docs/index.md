@@ -48,9 +48,9 @@
 | tissue\_ontology\_term\_id | string | 是 | 如果 tissue\_type is "cell line 必须是Cellosaurus .  如果 tissue\_type 是 "primary cell culture", this MUST follow the requirements for cell\_type\_ontology\_term\_id.  如果tissue\_type 是 "organoid", 胚胎不能是   如果类器官是胚状体, 推荐 是  ，如果类器官是 gastruloid, 推荐值是  其他 [UBERON本体论](https://github.com/obophenotype/uberon/blob/master/uberon.obo) 或[plant-ontology](https://github.com/Planteome/plant-ontology)的一部分  ，癌症或肿瘤组织统一标注cacer和tumor | UBERON:0001828; |
 | tissue | string | 是 | 易理解的组织字段 |  |
 | tissue\_type | string | 是 | 组织类型,可选值如下   * "cell line" * "organoid" * "primary cell culture" * "tissue" | tissue; organoid; cell culture |
-| sex | string | 是 | 样本性别,必须是下面的一部分  *雌雄同体：*  female：  male：  如果不清楚可以填写"unknown" | PATO\_0000383"；unknown" |
+| sex | string | 是 | 样本性别,必须是下面的一部分  *雌雄同体：*  female：  male：  如果不清楚可以填写"unknown" | unknown" |
 | disease | string | 是 | 样本疾病状态，健康样本填 Normal。 | Lung Adenocarcinoma / Normal |
-| isease\_ontology\_term\_id | string | 是 | 正常或健康*：*  其他的必须是[MONDO\_0000001](https://purl.obolibrary.org/obo/mondo.owl)的一部分 | 人：[MONDO\_0000001](https://purl.obolibrary.org/obo/mondo.owl) |
+| disease\_ontology\_term\_id | string | 是 | 正常或健康*：*  其他的必须是[MONDO\_0000001](https://purl.obolibrary.org/obo/mondo.owl)的一部分 | 人：[MONDO\_0000001](https://purl.obolibrary.org/obo/mondo.owl) |
 |  |  |  |  |  |
 | organism\_taxid | string | 是 | 物种Taid | 9606 |
 | reference\_genome | string | 是 | 比对使用的参考基因组版本，决定了坐标体系。 | GRCh38 / mm10 |
@@ -126,7 +126,7 @@ adata.var.index：必须为 基因 ID (Gene ID)（如 Ensembl ID: ENSG00000123
 
 ## 四、**数据文件质控标准**
 
-在生成标准 H5AD 文件后，系统自动计算 QC 指标，并对单个文件进行评估，
+在生成标准 H5AD 文件后，系统自动计算 QC 指标，并对单个文件进行评估，，注意数据文件评估值评估原始矩阵，缺失才会评估分析后数据，补充文件不进行评估
 
 ### **4.1 质控字段**
 
@@ -168,23 +168,35 @@ adata.var.index：必须为 基因 ID (Gene ID)（如 Ensembl ID: ENSG00000123
 
 元信息完整度不仅考察必填字段，重点评估非必要信息的填报情况，以体现数据的可复用性与挖掘价值。
 
-1. 核心字段（决定数据是否能用、能否入库）
-   生物学属性：tissue（组织）、disease（疾病）、development\_stage（发育阶段）、sex（性别）、organism\_taxid（物种）
+1.核心字段（共5项，决定数据是否有基本的生物学价值）
 
-\*实验属性\*：library\_strategy（实验类型）
+1. organism\_taxid（物种：如 9606，10090）
+2. tissue / tissue\_ontology\_term\_id（组织：如 Brain / UBERON:0000955）
+3. disease / disease\_ontology\_term\_id（疾病：如 Normal / MONDO:0000001）
+4. sex（性别：如 male, female, unknown）
+5. development\_stage / development\_stage\_ontology\_term\_id（发育阶段：如 adult）
 
-2.推荐字段
+2.推荐字段 16项（其余所有必填与推荐项，决定数据是否“好用”）
 
-donor\_name
+* 管理属性：title, summary, contributors, reference
+* 样本属性：sample\_name, donor\_name
+* 实验属性：library\_strategy, library\_construction\_method, sequenced\_fragment, tissue\_type
+* 生信属性：reference\_genome, gene\_annotation\_version
+* 文件与结构属性：raw\_matrix\_file processed\_file , obs\_cell\_type\_column, obsm\_embedding\_key
 
-* 计算公式：
+3.计算公式：
 
-![](data:image/png;base64...)
+* 核心完整度 = 核心字段已填数 ÷ 5 × 100%
+* 辅助完整度 = 辅助字段已填数 ÷ 辅助字段总数 × 100%
 
-* 评分层级：
-  + ≥ 90% (优)：核心信息完备，且补充了关键的非必要信息（如详细病理信息、自定义参考基因组等）。
-  + 30% - 90% (良)：仅满足核心归档要求，缺乏辅助分析信息。
-  + < 30% (差)：核心信息缺失，严重影响数据的可用性。
+最终评级映射表：
+
+|  |  |  |
+| --- | --- | --- |
+| 最终评级 | 判定条件（必须同时满足） | 业务解释 |
+| 差 (<30%的等价物) | 核心完整度 < 50%（即5个核心缺3个及以上） | 直接否决。连最基本的“是什么东西”都说不清，毫无生物学价值，不予归档。 |
+| 良 (30%-90%的等价物) | 核心完整度 ≥ 50%，但 辅助完整度 < 70% | 基础可用。数据身份明确，但缺乏实验细节或原始文件。适合作为“待治理/待补充”的数据先收进来。 |
+| 优 (≥90%的等价物) | 核心完整度 = 100%，且 辅助完整度 ≥ 70% | 精品数据。生物学身份清晰，且实验可追溯、文件齐备，可直接用于深度分析或模型训练。 |
 
 ### 5.3 项目综合评分与评级流程
 
@@ -194,7 +206,7 @@ donor\_name
 
 根据单文件 QC 评级结果（优质/合格/让步接受/不合格）及项目级统计指标，确定项目初始质量等级。
 
-* A 类 (优质基线)：所有单文件均为 1 级（优质），且项目总细胞/Spot 数 > 50,000。
+* A 类 (优质基线)：80% 以上单文件均为 1 级（优质），且项目总细胞/Spot 数 > 50,000。
 * B 类 (合格基线)：80% 以上单文件为 2 级（合格）及以上，无 4 级（不合格）文件。
 * C 类 (风险基线)：存在 4 级（不合格）文件，或 20% 以上单文件为 3 级（让步接受）。
 
@@ -205,7 +217,7 @@ donor\_name
 |  |  |  |
 | --- | --- | --- |
 | 最终等级 | 定义 | 评判标准与修正规则 |
-| 1级 | 优质 | [数据高质量 + 元信息完整]  基础定级为 A 类，且元信息完整度 ≥ 90%。数据极具挖掘价值，可直接用于高水平研究。 |
-| 2级 | 合格 | [数据合格 或 元信息良好]  1. 基础定级为 A/B 类，但元信息完整度在 30%-90% 之间（元信息扣分）；  2. 或基础定级为 C 类，但元信息完整度 ≥ 90%（数据质量扣分）。 |
-| 3级 | 让步接受 | [存在短板]  1. 基础定级为 A/B 类，但元信息完整度 < 30%（元信息严重缺失）；  2. 或基础定级为 C 类，且元信息完整度在 30%-90% 之间。数据可用性受限，需谨慎使用。 |
-| 4级 | 不合格 | [完全不可用]  基础定级为 C 类，且元信息完整度 < 30%。数据质量差且缺乏关键描述，建议重新实验或不予归档。 |
+| 1级 | 优质 | [强强联合] 基础定级为 A类，且元信息评级为 优。数据质量极佳且信息完备，可直接用于高水平研究或AI训练。 |
+| 2级 | 合格 | [略有瑕疵]  1. 基础定级为 A/B类，且元信息评级为 良（质量好但缺细节）；  2. 基础定级为 C类，但元信息评级为 优（质量有风险但信息极度完整，可尝试挽救）。 |
+| 3级 | 让步接受 | [存在短板] 基础定级为 C类，且元信息评级为 良。数据可用性受限，需谨慎使用。 |
+| 4级 | 不合格 | [完全不可用] 元信息评级为 差（触发一票否决），无论基础质量定级是什么，均评为4级。建议重新梳理或不予归档。 |
