@@ -31,3 +31,7 @@ markdown_extensions:
 
 nav:
   - 首页: index.md
+  - 元信息规范: metadata.md
+  - 数据标准化处理规范: standardization.md
+  - 数据文件质控标准: qc_standard.md
+  - 项目数据评估打分: project_evaluation.md
