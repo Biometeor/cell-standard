@@ -31,7 +31,6 @@ markdown_extensions:
 
 nav:
   - 首页: index.md
-  - 项目前置评审: prereview.md
   - 数据标准:
     - 元信息规范: metadata.md
     - 数据标准化处理规范: standardization.md
