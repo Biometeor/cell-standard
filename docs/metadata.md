@@ -11,6 +11,7 @@
 | summary | string | 是 | 数据集详细描述 | We have only begun to scratch the surface… |
 | contributors | string | 是 | 数据集递交者 | San Zhang |
 | reference | string | 推荐 | 数据集发表文献信息DOI号 | doi:10.1093/nar/gkad933 |
+| project_id | string | 推荐 | 关联测序数据项目id |  |
 
 ## 2 文件元信息
 
@@ -42,18 +43,18 @@
 | raw_matrix_file_md5 | string | 是 | 原始矩阵文件的 MD5 校验码，用于完整性验证。 | a1b2c3d4e5… |
 | processed_file_name | string | 推荐 | 用户自行分析后的 H5AD 文件路径（可选）。 | ./data/S01_analyzed.h5ad |
 | processed_file_md5 | string | 推荐 | 分析后文件的 MD5 校验码。 | f6e7d8c9b0… |
-| obs_cell_type_column | string | 是 | H5AD 文件 .obs 中存储细胞类型注释的列名。 | cell_type / cell_type_major |
-| obsm_embedding_key | string | 是 | H5AD 文件 .obsm 中存储降维坐标的键名（如 UMAP/tSNE）。 | X_umap |
+| obs_cell_type_column | string | 推荐 | H5AD 文件 .obs 中存储细胞类型注释的列名。 | cell_type / cell_type_major |
+| obsm_embedding_key | string | 推荐 | H5AD 文件 .obsm 中存储降维坐标的键名（如 UMAP/tSNE）。 | X_umap |
 
-### 2.2 空间转录组stereoseq适配
+### 2.2 空间转录组适配字段
 
 |  |  |  |  |  |
 | --- | --- | --- | --- | --- |
 | **字段名** | **字段类型** | **必填** | **描述** | **示例** |
-| stereo_seq_image_file | String | 条件推荐 | Stereo-seq 特有的图像文件路径（如 .tif 格式） | data/S001/spatial/stereo_seq_image.tif |
-| stereo_seq_image_file_MD5 | String | 条件推荐 | Stereo-seq 图像文件MD5校验值 | c3d4e5f6g7h8… |
-| stereo_seq_cell_bin_file | String | 条件推荐 | Stereo-seq 细胞分割和bin映射结果文件路径 | data/S001/stereo_seq/cell_bin.json |
-| stereo_seq_cell_bin_file_MD5 | String | 条件推荐 | Stereo-seq 细胞bin文件MD5校验值 | d4e5f6g7h8i9… |
+| image_file | String | 条件推荐 | 空间组学图像文件路径（如 .tif 格式） | data/S001/spatial/stereo_seq_image.tif |
+| image_file_MD5 | String | 条件推荐 | 图像文件MD5校验值 | c3d4e5f6g7h8… |
+| cell_bin_file | String | 条件推荐 | 空间组细胞分割后的数据，建议统一成H5AD格式 | data/S001/spatial/xx.h5ad |
+| cell_bin_file_MD5 | String | 条件推荐 | 细胞分割后文件MD5值 | c3d5e5f6g7h8… |
 
 ## 3 其他补充文件
 
