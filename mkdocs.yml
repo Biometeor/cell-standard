@@ -33,6 +33,9 @@ nav:
   - 首页: index.md
   - 数据标准:
     - 元信息规范: metadata.md
+    - 📋 元信息填写表: metadata/metadata_form.md
     - 数据标准化处理规范: standardization.md
     - 数据文件质控标准: qc_standard.md
+    - 📋 数据质控填写表: qc/qc_form.md
     - 项目数据评估打分: project_evaluation.md
+    - 📋 数据集自评评分表: evaluation/evaluation_form.md
